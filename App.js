@@ -38,6 +38,10 @@ function addComment(ev) {
     likeButton.className = 'likeComment';
     likeButton.innerHTML = `Like`;
 
+    // for dislike
+    const dislikeButton = document.createElement('button');
+    dislikeButton.className = 'dislikeComment';
+    dislikeButton.innerHTML = `Dislike`;
 
     // for delete
     const deleteButton = document.createElement('button');
@@ -61,7 +65,7 @@ function addComment(ev) {
             textBox.innerHTML = commentText;
             textBox.style.backgroundColor = "cornflowerblue";
             //append all 
-            wrapDiv.append(textBox, replyButton, likeButton, deleteButton);
+            wrapDiv.append(textBox, replyButton, likeButton, dislikeButton, deleteButton);
             commentContainer.appendChild(wrapDiv);
         }
 
@@ -81,7 +85,7 @@ function addComment(ev) {
             // remove textarea after add reply on child
             wrapDiv.innerHTML = '';
             // add all button same as like parenth comment
-            wrapDiv.append(textBox, replyButton, likeButton, deleteButton);
+            wrapDiv.append(textBox, replyButton, likeButton, dislikeButton, deleteButton);
         }
     }
     setOnLocalStorage();
@@ -134,6 +138,13 @@ document.getElementById('allComments').addEventListener('click', function (e) {
         e.target.innerHTML = likeBtnValue !== 'Like' ? Number.parseInt(likeBtnValue) + 1 + " Like" : 1 + " Like";
         setOnLocalStorage();
     }
+    // adding dislike on button click
+    else if (hasClass(e.target, 'dislikeComment')) {
+        const dislikeBtnValue = e.target.innerHTML;
+        e.target.innerHTML = dislikeBtnValue !== 'Dislike' ? Number.parseInt(dislikeBtnValue) + 1 + " Dislike" : 1 + " Dislike";
+        setOnLocalStorage();
+    }
+
     // cancel reply on button click
 
     else if (hasClass(e.target, 'cancelReply')) {
