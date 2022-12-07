@@ -1,4 +1,3 @@
-
 //create commentContainer variable 
 const commentContainer = document.getElementById('allComments');
 
@@ -20,7 +19,6 @@ function hasClass(elem, className) {
     // console.log(elem.className.split(' ').indexOf(className)); // output: true or false
     return elem.className.split(' ').indexOf(className) > -1;
 }
-
 
 // part 3  => Add comments dynamically
 //reply, like ,delete buttons  
@@ -49,7 +47,7 @@ function addComment(ev) {
     deleteButton.innerHTML = `Delete`;
 
 
-    // add comment from main container with textBox, replyButton, likeButton, deleteButton.
+    // add comment from main container with textBox, replyButton, likeButton,dislikeButton deleteButton.
     if (hasClass(ev.target.parentElement, 'container')) {
         // console.log(ev.target.parentElement);
         const wrapDiv = document.createElement('div');
@@ -68,7 +66,6 @@ function addComment(ev) {
             wrapDiv.append(textBox, replyButton, likeButton, dislikeButton, deleteButton);
             commentContainer.appendChild(wrapDiv);
         }
-
     }
     else {
         // this is for child comment add
@@ -100,6 +97,9 @@ document.getElementById('addComments').addEventListener('click', function (ev) {
 // Add comments dynamically  ends here
 
 // part 6
+let flag = 0;    
+console.log('outside-flag',flag);
+
 document.getElementById('allComments').addEventListener('click', function (e) {
     // creating HTML for reply
     if (hasClass(e.target, 'reply')) {
@@ -120,15 +120,22 @@ document.getElementById('allComments').addEventListener('click', function (e) {
         cancelButton.innerHTML = 'Cancel';
         cancelButton.className = 'cancelReply';
 
-        wrapDiv.append(textArea, addButton, cancelButton);
-        parentDiv.appendChild(wrapDiv);
-
+        if(flag === 0){
+           wrapDiv.append(textArea, addButton, cancelButton);     
+           parentDiv.appendChild(wrapDiv);
+           document.getElementsByClassName("reply").disabled = true;
+           flag++;
+          console.log('inside-flag',flag);
+       }
     }
 
     // adding all the html data from addComment function for reply
 
     else if (hasClass(e.target, 'addReply')) {
         addComment(e);
+        flag--;
+        document.getElementsByClassName("reply").disabled = false;
+        console.log('after addreply-flag',flag);
     }
 
     // adding like on button click
@@ -150,6 +157,8 @@ document.getElementById('allComments').addEventListener('click', function (e) {
     else if (hasClass(e.target, 'cancelReply')) {
         e.target.parentElement.innerHTML = '';
         setOnLocalStorage();
+        flag--;
+        document.getElementsByClassName("reply").disabled = false;
     }
 
     // delete entire  comment chain
